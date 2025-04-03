@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ChecklistItemTemplate index{% endblock %}
+
+{% block body %}
+    <h1>ChecklistItemTemplate index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Label</th>
+                <th>IsRequired</th>
+                <th>Position</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for checklist_item_template in checklist_item_templates %}
+            <tr>
+                <td>{{ checklist_item_template.id }}</td>
+                <td>{{ checklist_item_template.label }}</td>
+                <td>{{ checklist_item_template.isRequired ? 'Yes' : 'No' }}</td>
+                <td>{{ checklist_item_template.position }}</td>
+                <td>
+                    <a href="{{ path('app_checklist_item_template_show', {'id': checklist_item_template.id}) }}">show</a>
+                    <a href="{{ path('app_checklist_item_template_edit', {'id': checklist_item_template.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_checklist_item_template_new') }}">Create new</a>
+{% endblock %}

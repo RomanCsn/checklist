@@ -1,17 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Checklist Manager{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>✓</text></svg>">
         {% block stylesheets %}
+            {{ importmap('app') }}
+           <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
         {% endblock %}
 
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
+            {{ importmap('app', {importmap: 'app'}) }}
         {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body class="bg-gray-50 min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-4">
+                <nav class="flex justify-between items-center">
+                    <a href="{{ path('app_home') }}" class="text-xl font-bold text-blue-600">Checklist Manager</a>
+                    <div class="flex space-x-6">
+                        <a href="{{ path('app_checklist_template_index') }}" class="text-gray-600 hover:text-blue-600">Modèles</a>
+                        <a href="{{ path('app_project_checklist_index') }}" class="text-gray-600 hover:text-blue-600">Projets</a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow">
+            {% block body %}{% endblock %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t mt-12">
+            <div class="container mx-auto px-4 py-6">
+                <p class="text-center text-gray-600">© {{ "now"|date("Y") }} Checklist Manager</p>
+            </div>
+        </footer>
     </body>
 </html>

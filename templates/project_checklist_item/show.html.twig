@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de l'élément{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">Détail de l'élément</h1>
+            <div class="flex space-x-2">
+                <a href="{{ path('app_project_checklist_item_index') }}" 
+                   class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Retour
+                </a>
+                <a href="{{ path('app_project_checklist_item_edit', {'id': project_checklist_item.id}) }}" 
+                   class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Modifier
+                </a>
+            </div>
+        </div>
+        
+        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900">Informations de l'élément</h3>
+            </div>
+            <div class="px-6 py-5 divide-y divide-gray-200">
+                <div class="py-4 grid grid-cols-3 gap-4">
+                    <dt class="text-sm font-medium text-gray-500">Libellé</dt>
+                    <dd class="text-sm text-gray-900 col-span-2">{{ project_checklist_item.label }}</dd>
+                </div>
+                <div class="py-4 grid grid-cols-3 gap-4">
+                    <dt class="text-sm font-medium text-gray-500">État</dt>
+                    <dd class="text-sm text-gray-900 col-span-2">
+                        {% if project_checklist_item.isChecked %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Complété
+                            </span>
+                        {% else %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                À faire
+                            </span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div class="py-4 grid grid-cols-3 gap-4">
+                    <dt class="text-sm font-medium text-gray-500">Position</dt>
+                    <dd class="text-sm text-gray-900 col-span-2">{{ project_checklist_item.position }}</dd>
+                </div>
+                <div class="py-4 grid grid-cols-3 gap-4">
+                    <dt class="text-sm font-medium text-gray-500">Checklist associée</dt>
+                    <dd class="text-sm text-gray-900 col-span-2">
+                        {% if project_checklist_item.relation %}
+                            <a href="{{ path('app_project_checklist_show', {'id': project_checklist_item.relation.id}) }}" class="text-blue-600 hover:text-blue-800">
+                                {{ project_checklist_item.relation.name }}
+                            </a>
+                        {% else %}
+                            <span class="text-gray-500 italic">Non associé</span>
+                        {% endif %}
+                    </dd>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6 flex justify-end">
+            {{ include('project_checklist_item/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

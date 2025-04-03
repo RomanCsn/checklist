@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ChecklistItemTemplate{% endblock %}
+
+{% block body %}
+    <h1>Create new ChecklistItemTemplate</h1>
+
+    {{ include('checklist_item_template/_form.html.twig') }}
+
+    <a href="{{ path('app_checklist_item_template_index') }}">back to list</a>
+{% endblock %}

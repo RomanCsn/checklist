@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des checklists de projet{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Checklists de projet</h1>
+            <a href="{{ path('app_project_checklist_new') }}" 
+               class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Nouvelle checklist
+            </a>
+        </div>
+        
+        {% if project_checklists|length > 0 %}
+            <div class="bg-white shadow-sm overflow-hidden rounded-lg">
+                <ul class="divide-y divide-gray-200">
+                    {% for project_checklist in project_checklists %}
+                        <li class="hover:bg-gray-50">
+                            <a href="{{ path('app_project_checklist_show', {'id': project_checklist.id}) }}" class="block">
+                                <div class="px-6 py-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-lg font-medium text-blue-600">{{ project_checklist.name }}</h3>
+                                            <p class="text-sm text-gray-500 mt-1">Client: {{ project_checklist.client }}</p>
+                                        </div>
+                                        <div class="flex flex-col items-end">
+                                            <p class="text-sm text-gray-500">{{ project_checklist.createdAt ? project_checklist.createdAt|date('d/m/Y') : '' }}</p>
+                                            
+                                            {% set total = project_checklist.projectChecklistItems|length %}
+                                            {% set completed = project_checklist.projectChecklistItems|filter(item => item.isChecked)|length %}
+                                            {% set percent = total > 0 ? (completed / total * 100)|round : 0 %}
+                                            
+                                            <div class="mt-2 flex items-center">
+                                                <span class="text-xs font-medium text-gray-700 mr-2">{{ percent }}%</span>
+                                                <div class="w-24 bg-gray-200 rounded-full h-2">
+                                                    <div class="bg-blue-600 h-2 rounded-full" style="width: {{ percent }}%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div class="bg-white shadow-sm rounded-lg p-12 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">Aucune checklist</h3>
+                <p class="mt-1 text-sm text-gray-500">Commencez par créer une nouvelle checklist.</p>
+                <div class="mt-6">
+                    <a href="{{ path('app_project_checklist_new') }}" 
+                       class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Créer une checklist
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
